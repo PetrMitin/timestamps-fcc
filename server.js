@@ -51,23 +51,18 @@ app.get('/api/timestamp/', (req, res) => {
 
 app.get('/api/timestamp/:data_str', (req, res) => {
   const timeStr = req.body.time_str
-  let resObj = {}
+  let date;
   if (timeStr === 'error'){
-    resObj = {'error': 'Invalid Date'}
+    return res.json({'error': 'Invalid Date'})
   } else if (req.body.is_unix){
-    const date = new Date(parseInt(timeStr))
-    resObj = {
-      'unix': date.getTime(),
-      'utc': date.toUTCString()
-    }
+    date = new Date(parseInt(timeStr))
   } else {
-    const date = new Date(timeStr)
-    resObj = {
-      'unix': date.getTime(),
-      'utc': date.toUTCString()
-    }
+    date = new Date(timeStr)
   }
-  res.json(resObj)
+  res.json({
+    'unix': date.getTime(),
+    'utc': date.toUTCString()
+  })
 })
 
 // listen for requests :)
